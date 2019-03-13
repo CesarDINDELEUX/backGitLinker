@@ -1,0 +1,23 @@
+{
+  "name": "backgitlinker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "this is a test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CesarDINDELEUX/backGitLinker.git"
+  },
+  "author": "cesar dindeleux",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CesarDINDELEUX/backGitLinker/issues"
+  },
+  "homepage": "https://github.com/CesarDINDELEUX/backGitLinker#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "express": "^4.16.4"
+  }
+}
