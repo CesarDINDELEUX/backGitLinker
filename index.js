@@ -13,7 +13,7 @@ app.get("/user", (req,res,next) => {
     axios
       .get('https://api.github.com/user', {
         headers: {
-          'Authorization': ''
+          'Authorization': 'token '
         }
       })
       .then((response) => {
