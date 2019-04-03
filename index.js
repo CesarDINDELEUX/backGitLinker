@@ -1,5 +1,6 @@
 var express = require("express");
 var axios = require("axios");
+var helper = require('./Helper/functions.js')
 var app = express();
 const config = require('dotenv').config()
 const githubToken = process.env.TOKEN
@@ -29,53 +30,32 @@ app.get("/user/:userName", (req,res,next) => {
 })
 app.get("/orgs", (req,res,next) => {
   axios
-    .get('https://api.github.com/orgs/Zenika/members', {
+    .get('https://api.github.com/orgs/Zenika', {
       headers: {
         'Authorization': process.env.TOKEN
       }
     })
     .then((response) => {
-      console.log(formatUserInfos(response.data[0]))
+      console.log(helper.getPopularRepos(response.data.repos_url))
     })
     .catch(err => {
       //document.body.textContent = 'Error: ' + err.stack
       console.log(err)
     })
 })
-
-
-
-
-
-app.get("/orga", (req,res,next) => {
-    axios
-      .get('https://api.github.com/users/CesarDINDELEUX/orgs', {
-        headers: {
-          'Authorization': ''
-        }
-      })
-      .then((response) => {
-        response.data
-      })
-      .catch(err => {
-        document.body.textContent = 'Error: ' + err.stack
-        console.log(err)
-      })
+app.get("/orga", async function (req,res,next) {
+  let test =  await getAPIResponse('https://api.github.com/orgs/Zenika')
+  helper.getPopularRepos(test)
 })
-function getAPIResponse(url) {
-    axios
-      .get(url, {
-        headers: {
-          'Authorization': ''
-        }
-      })
-      .then((response) => {
-        return response.data
-      })
-      .catch(err => {
-        document.body.textContent = 'Error: ' + err.stack
-        console.log(err)
-      })
+
+async function getAPIResponse(url) {
+  // console.log(url)
+let apiCall = await axios.get(url, {
+  headers: {
+    'Authorization': process.env.TOKEN
+  }
+})
+return apiCall.data
 }
 
 function formatUserInfos(userNotFormated){
@@ -101,3 +81,5 @@ repo.starCount = repoNotFormated.stargazers_count
 repo.language = repoNotFormated.language
 return repo
 }
+
+module.exports.getAPIResponse = getAPIResponse
