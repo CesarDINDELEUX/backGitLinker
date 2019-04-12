@@ -12,44 +12,25 @@ app.get("/url", (req, res, next) => {
     res.json(["Tony","Lisa","Michael","Ginger","Food"]);
 });
 
-app.get("/user/:userName", (req,res,next) => {
-    axios
-      .get('https://api.github.com/users/' + req.params.userName, {
-        headers: {
-          'Authorization': process.env.TOKEN
-        }
-      })
-      .then((response) => {
-        //console.log(getOrganizations('https://api.github.com/users/CesarDINDELEUX/orgs'))
-        res.json(response.data)
-      })
-      .catch(err => {
-        //document.body.textContent = 'Error: ' + err.stack
-        // console.log(err)
-      })
+app.get("/user/:userName", async function (req,res,next) {
+    let user = await getAPIResponse('https://api.github.com/users/' + req.params.userName)
+    console.log(user)
 })
-app.get("/orgs", (req,res,next) => {
-  axios
-    .get('https://api.github.com/orgs/Zenika', {
-      headers: {
-        'Authorization': process.env.TOKEN
-      }
-    })
-    .then((response) => {
-      console.log(helper.getPopularRepos(response.data.repos_url))
-    })
-    .catch(err => {
-      //document.body.textContent = 'Error: ' + err.stack
-      console.log(err)
-    })
+app.get("/orgs/:orgName",async function (req,res,next) {
+  let orga = await getAPIResponse('https://api.github.com/orgs/' + req.params.orgName)
+  console.log(orga)
 })
 app.get("/orga", async function (req,res,next) {
   let test =  await getAPIResponse('https://api.github.com/orgs/Zenika')
   helper.getPopularRepos(test)
 })
 
+app.get("/orgasearch", async function (req,res,next) {
+  let test =  await getAPIResponse('https://api.github.com/search/repositories?q=user:Zenika&sort=stars&order=desc')
+  console.log(test)
+})
+
 async function getAPIResponse(url) {
-  // console.log(url)
 let apiCall = await axios.get(url, {
   headers: {
     'Authorization': process.env.TOKEN
