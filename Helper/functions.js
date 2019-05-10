@@ -18,25 +18,40 @@ async function getRateLimit(){
   return rateLimit
 }
 
-
 // Get watchers / forks and language informations from a list of repos and returns it.
 async function getCrucialInformations(listOfRepos){
-var languageMap = new Map();
-var forkMap = new Map();
-var watchersMap = new Map();
-for (let index = 0; index < listOfRepos.length; index++) {
-  const curRepository = listOfRepos[index];
+  var languageMap = new Map();
+  var forkMap = new Map();
+  var watchersMap = new Map();
+  for (let index = 0; index < listOfRepos.length; index++) {
+    const curRepository = listOfRepos[index];
   // Add repos language in a MAP (if it has already been pushed, just +1 for the usage number)
-  if(languageMap.get(curRepository.language) != undefined) { // Laguage already in the map, just +1 in the usage value
-    languageMap.set(curRepository.language, languageMap.get(curRepository) + 1)
-  }
-  else { // if the language isn't in the map, add it with 1 usage
-    languageMap.set(curRepository.language, 1)
-  }
+    if(languageMap.get(curRepository.language) != undefined) { // Laguage already in the map, just +1 in the usage value
+      languageMap.set(curRepository.language, languageMap.get(curRepository) + 1)
+    }
+    else { // if the language isn't in the map, add it with 1 usage
+      languageMap.set(curRepository.language, 1)
+    }
   forkMap.set(curRepository.name, curRepository.forks_count)
-  watchersMap.ser(curRepository.name, curRepository.watchers)
+  watchersMap.set(curRepository.name, curRepository.watchers)
+  }
 }
+
+// Get user informations such as followers, following etc ...
+async function gatherUserInformations(user) {
+  var followers = await index.getAPIResponse(user.followers_url)
+  var following = await index.getAPIResponse(user.following_url)
 }
+
+
+
+
+
+
+
+
+
+
 
 
 module.exports.getPopularRepos = getPopularRepos;

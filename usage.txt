@@ -1,0 +1,15 @@
+Algogia usage :
+
+Retreive repos :
+
+Algogia provides this : 
+
+description : string
+forks : int
+full_name : string (Org name/ReposName)
+language: string
+name : string
+organization : string
+owner : string
+watchers : int
+stars : int
