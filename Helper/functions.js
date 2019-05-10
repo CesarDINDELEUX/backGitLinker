@@ -43,17 +43,6 @@ async function gatherUserInformations(user) {
   var following = await index.getAPIResponse(user.following_url)
 }
 
-
-
-
-
-
-
-
-
-
-
-
 module.exports.getPopularRepos = getPopularRepos;
 module.exports.getRateLimit = getRateLimit;
 module.exports.getCrucialInformations = getCrucialInformations;
