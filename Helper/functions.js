@@ -11,11 +11,15 @@ async function getPopularRepos(jsonOrga){
   }
 
 }
+// Get github api Rate limit in real time
+// Function returns the full json object
 async function getRateLimit(){
   let rateLimit = await index.getAPIResponse("https://api.github.com/rate_limit")
   return rateLimit
 }
 
+
+// Get watchers / forks and language informations from a list of repos and returns it.
 async function getCrucialInformations(listOfRepos){
 var languageMap = new Map();
 var forkMap = new Map();
@@ -35,12 +39,6 @@ for (let index = 0; index < listOfRepos.length; index++) {
 }
 
 
-
-
-
-
-
-
-
-
-module.exports.getPopularRepos = getPopularRepos; 
+module.exports.getPopularRepos = getPopularRepos;
+module.exports.getRateLimit = getRateLimit;
+module.exports.getCrucialInformations = getCrucialInformations;
