@@ -30,6 +30,9 @@ app.get("/orgasearch", async function (req,res,next) {
   console.log(test)
 })
 
+app.get("/")
+
+
 async function getAPIResponse(url) {
 let apiCall = await axios.get(url, {
   headers: {
