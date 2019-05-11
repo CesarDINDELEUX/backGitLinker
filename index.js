@@ -2,6 +2,8 @@ var express = require("express");
 var axios = require("axios");
 var helper = require('./Helper/functions.js')
 var app = express();
+var cors = require('cors');
+app.use(cors());
 const config = require('dotenv').config()
 const githubToken = process.env.TOKEN
 
@@ -22,13 +24,14 @@ app.get("/orgs/:orgName",async function (req,res,next) {
   console.log(orga)
 })
 app.get("/orga", async function (req,res,next) {
-  let test =  await getAPIResponse('https://api.github.com/orgs/Zenika')
-  helper.getPopularRepos(test)
+  let test =  await getAPIResponse('https://api.github.com/orgs/Zenika/repos?per_page=100')
+  //helper.getPopularRepos(test)
+  res.json(test)
 })
 
 app.get("/orgasearch", async function (req,res,next) {
   let test =  await getAPIResponse('https://api.github.com/search/repositories?q=user:Zenika&sort=stars&order=desc')
-  console.log(test)
+  return test
 })
 
 app.get("/")
