@@ -19,9 +19,11 @@ app.get("/user/:userName", async function (req,res,next) {
     let user = await getAPIResponse('https://api.github.com/users/' + req.params.userName)
     console.log(user)
 })
+
 app.get("/orgs/:orgName",async function (req,res,next) {
   let orga = await getAPIResponse('https://api.github.com/orgs/' + req.params.orgName)
-  console.log(orga)
+  helper.fetchInformations(orga)
+  //console.log(orga)
 })
 app.get("/orga", async function (req,res,next) {
   let test =  await getAPIResponse('https://api.github.com/orgs/Zenika/repos?per_page=100')
