@@ -20,10 +20,27 @@ app.get("/user/:userName", async function (req,res,next) {
     console.log(user)
 })
 
+app.get("/ratelimit",async function (req,res,next) {
+  let rateLimit = await getAPIResponse("https://api.github.com/rate_limit")
+  res.send(rateLimit)
+})
+
 app.get("/orgs/:orgName",async function (req,res,next) {
-  let orga = await getAPIResponse('https://api.github.com/orgs/' + req.params.orgName)
-  helper.fetchInformations(orga)
-  //console.log(orga)
+  let orga = await getAPIResponse('https://api.github.com/search/repositories?q=user:Zenika&sort=stars&order=desc&per_page=100&page=1')
+  let otherPage = ''
+  let numberOfCallNeeded = Math.trunc(orga.total_count / 100) + 1
+  for (let index = 1; index < numberOfCallNeeded; index++) {
+    //console.log(index)
+    let pageNumber = index + 1
+    console.log(pageNumber)
+    otherPage = await getAPIResponse('https://api.github.com/search/repositories?q=user:Zenika&sort=stars&order=desc&per_page=100&page=' + pageNumber)
+    orga.items.push(otherPage.items[0])
+    for (let y = 0; y < otherPage.items.length; y++) {
+      const element = otherPage.items[y];
+      orga.items.push(element)
+    }
+  }
+  res.send(orga.items)
 })
 app.get("/orga", async function (req,res,next) {
   let test =  await getAPIResponse('https://api.github.com/orgs/Zenika/repos?per_page=100')
