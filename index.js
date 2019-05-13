@@ -1,14 +1,16 @@
 var express = require("express");
 var axios = require("axios");
 var helper = require('./Helper/functions.js')
-var app = express();
 var cors = require('cors');
-app.use(cors());
 const config = require('dotenv').config()
 const githubToken = process.env.TOKEN
 
-app.listen(3000, () => {
- console.log("Server running on port 3000");
+var app = express();
+app.use(cors());
+
+
+app.listen(3001, () => {
+ console.log("Server running on port 3001");
 });
 
 app.get("/url", (req, res, next) => {
@@ -23,6 +25,25 @@ app.get("/user/:userName", async function (req,res,next) {
 app.get("/ratelimit",async function (req,res,next) {
   let rateLimit = await getAPIResponse("https://api.github.com/rate_limit")
   res.send(rateLimit)
+})
+
+app.get("/orgs/:orgName/members",async function (req,res,next) {
+  let orga = []
+  for (let index = 1; index < 200; index++) {
+    let pageToCall = 'https://api.github.com/orgs/Zenika/members?per_page=100&page=' + index
+    let resultByPage = await getAPIResponse(pageToCall)
+    console.log('Getting org members page n°' + index)
+    if (resultByPage.length === 0) {
+      break;
+    }
+    else {
+      for (let index = 0; index < resultByPage.length; index++) {
+        const element = resultByPage[index];
+        orga.push(element)
+      }
+    }
+  }
+  res.send(orga)
 })
 
 app.get("/orgs/:orgName",async function (req,res,next) {
