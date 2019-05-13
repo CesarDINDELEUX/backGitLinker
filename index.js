@@ -8,13 +8,13 @@ const githubToken = process.env.TOKEN
 var app = express();
 app.use(cors());
 
-
-app.listen(3001, () => {
- console.log("Server running on port 3001");
+const PORT = process.env.PORT || 8080
+app.listen(PORT, () => {
+ console.log("Server running on port " + PORT);
 });
 
 app.get("/url", (req, res, next) => {
-    res.json(["Tony","Lisa","Michael","Ginger","Food"]);
+    res.json(["JOAN","T","MOCHE","<3 <3"]);
 });
 
 app.get("/user/:userName", async function (req,res,next) {
@@ -25,6 +25,13 @@ app.get("/user/:userName", async function (req,res,next) {
 app.get("/ratelimit",async function (req,res,next) {
   let rateLimit = await getAPIResponse("https://api.github.com/rate_limit")
   res.send(rateLimit)
+})
+
+
+app.get("/user/pr/:username",async function (req,res,next) {
+  let username = req.params.username
+  let pr = await getAPIResponse("https://api.github.com/search/issues?q=is:pr+author:" + username)
+  res.send(pr)
 })
 
 app.get("/orgs/:orgName/members",async function (req,res,next) {
@@ -53,7 +60,7 @@ app.get("/orgs/:orgName",async function (req,res,next) {
   for (let index = 1; index < numberOfCallNeeded; index++) {
     //console.log(index)
     let pageNumber = index + 1
-    console.log(pageNumber)
+    // console.log(pageNumber)
     otherPage = await getAPIResponse('https://api.github.com/search/repositories?q=user:Zenika&sort=stars&order=desc&per_page=100&page=' + pageNumber)
     orga.items.push(otherPage.items[0])
     for (let y = 0; y < otherPage.items.length; y++) {
